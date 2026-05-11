@@ -4,6 +4,7 @@ from pathlib import Path
 import joblib
 import pandas as pd
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 
 from src.api.parser import parse_house_description
 from src.api.schemas import (
@@ -17,6 +18,17 @@ APP_ROOT = Path(__file__).resolve().parents[2]
 MODEL_PATH = APP_ROOT / "models" / "house_price_model.joblib"
 
 app = FastAPI(title="HOU53-bot API", version="0.1.0")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://127.0.0.1:8080",
+        "http://localhost:8080",
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 @lru_cache

@@ -52,3 +52,16 @@ def test_predict_from_text_endpoint_returns_prediction_and_features():
     assert body["extracted_features"]["BedroomAbvGr"] == 3
     assert body["extracted_features"]["FullBath"] == 2
     assert body["extracted_features"]["Neighborhood"] == "Gilbert"
+
+
+def test_predict_from_text_options_request_is_allowed_for_frontend_origin():
+    response = client.options(
+        "/predict-from-text",
+        headers={
+            "Origin": "http://127.0.0.1:8080",
+            "Access-Control-Request-Method": "POST",
+        },
+    )
+
+    assert response.status_code == 200
+    assert response.headers["access-control-allow-origin"] == "http://127.0.0.1:8080"
