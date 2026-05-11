@@ -33,3 +33,22 @@ def test_predict_endpoint_returns_predicted_price():
     body = response.json()
     assert "predicted_price" in body
     assert isinstance(body["predicted_price"], float)
+
+
+def test_predict_from_text_endpoint_returns_prediction_and_features():
+    payload = {
+        "description": (
+            "A good two-story house in Gilbert with 3 bedrooms, 2 bathrooms, "
+            "1800 square feet, central air, and a 2 car garage built in 2005."
+        )
+    }
+
+    response = client.post("/predict-from-text", json=payload)
+
+    assert response.status_code == 200
+    body = response.json()
+    assert "predicted_price" in body
+    assert isinstance(body["predicted_price"], float)
+    assert body["extracted_features"]["BedroomAbvGr"] == 3
+    assert body["extracted_features"]["FullBath"] == 2
+    assert body["extracted_features"]["Neighborhood"] == "Gilbert"

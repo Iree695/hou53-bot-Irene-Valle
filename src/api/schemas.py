@@ -1,3 +1,5 @@
+from typing import Any
+
 from pydantic import BaseModel, ConfigDict, Field
 
 
@@ -87,3 +89,12 @@ class HouseFeatures(BaseModel):
 
 class PredictionResponse(BaseModel):
     predicted_price: float
+
+
+class DescriptionRequest(BaseModel):
+    description: str
+
+
+class TextPredictionResponse(BaseModel):
+    predicted_price: float
+    extracted_features: dict[str, Any]
